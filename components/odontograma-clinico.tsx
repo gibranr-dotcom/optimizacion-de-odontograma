@@ -40,11 +40,7 @@ export function OdontogramaClinico({ pacienteId = '00482', citaId = 'cita-demo' 
   const [seleccionado, setSeleccionado] = useState<number | null>(null)
   const [filtro, setFiltro] = useState('Todos')
   const [busqueda, setBusqueda] = useState('')
-  const [registros, setRegistros] = useState<Record<number, Registro>>({
-    16: { padecimiento: 'Caries', tratamiento: 'Resina', notas: 'Lesión oclusal distal' },
-    24: { padecimiento: 'Endodoncia', tratamiento: 'Corona', notas: 'Tratamiento finalizado' },
-    37: { padecimiento: 'Periodontitis', tratamiento: 'Limpieza', notas: 'Control periodontal' },
-  })
+  const [registros, setRegistros] = useState<Record<number, Registro>>({})
   const [borrador, setBorrador] = useState<Registro>({ padecimiento: 'Caries', tratamiento: 'Resina', notas: '' })
   const [cargando, setCargando] = useState(true)
   const [guardando, setGuardando] = useState(false)
@@ -106,12 +102,12 @@ export function OdontogramaClinico({ pacienteId = '00482', citaId = 'cita-demo' 
         type="button"
         aria-label={`Diente ${numero}${registro ? `, ${registro.padecimiento}` : ''}`}
         onClick={() => abrirDiente(numero)}
-        className={`group relative flex h-[76px] min-w-[42px] flex-1 flex-col items-center justify-end gap-1 rounded-2xl border p-1.5 transition-all hover:-translate-y-1 hover:border-teal-400 hover:shadow-lg hover:shadow-teal-950/10 ${visible ? 'opacity-100' : 'pointer-events-none opacity-15'} ${activo ? 'border-teal-500 bg-teal-50 shadow-md ring-2 ring-teal-200' : 'border-slate-200 bg-white'}`}
+        className={`group relative flex h-[68px] min-w-[34px] flex-1 flex-col items-center justify-end gap-0.5 rounded-xl border p-1 transition-all hover:-translate-y-1 hover:border-teal-400 hover:shadow-lg hover:shadow-teal-950/10 sm:h-[76px] sm:min-w-[42px] sm:gap-1 sm:rounded-2xl sm:p-1.5 ${visible ? 'opacity-100' : 'pointer-events-none opacity-15'} ${activo ? 'border-teal-500 bg-teal-50 shadow-md ring-2 ring-teal-200' : 'border-slate-200 bg-white'}`}
       >
         <span className={`absolute top-1 rounded-full px-1.5 py-0.5 text-[9px] font-bold ${registro ? colores[registro.padecimiento] : 'bg-slate-100 text-slate-500'}`}>
           {registro?.padecimiento?.slice(0, 3).toUpperCase() ?? '—'}
         </span>
-        <span className={`tooth-shape flex h-9 w-7 items-center justify-center rounded-[45%] border-2 text-xs font-bold ${registro ? 'border-teal-300 bg-teal-50 text-teal-800' : 'border-slate-300 bg-slate-50 text-slate-500'}`}>
+        <span className={`tooth-shape flex h-7 w-5 items-center justify-center rounded-[45%] border-2 text-[10px] font-bold sm:h-9 sm:w-7 sm:text-xs ${registro ? 'border-teal-300 bg-teal-50 text-teal-800' : 'border-slate-300 bg-slate-50 text-slate-500'}`}>
           {numero}
         </span>
       </button>
@@ -122,9 +118,9 @@ export function OdontogramaClinico({ pacienteId = '00482', citaId = 'cita-demo' 
   const conTratamiento = Object.values(registros).filter((item) => item.tratamiento !== 'Ninguno').length
 
   return (
-    <main className="min-h-screen bg-[#f4f8f8] px-4 py-6 text-slate-900 sm:px-8 lg:px-12">
+    <main className="min-h-screen bg-[#f4f8f8] px-3 py-4 text-slate-900 sm:px-8 sm:py-6 lg:px-12">
       <div className="mx-auto max-w-7xl">
-        <header className="mb-7 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+        <header className="mb-4 flex flex-col justify-between gap-3 sm:mb-7 sm:gap-5 md:flex-row md:items-end">
           <div>
             <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-teal-700"><Stethoscope className="size-4" /> Clínica Dental Sonrisa</div>
             <h1 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">Odontograma clínico</h1>
@@ -137,14 +133,14 @@ export function OdontogramaClinico({ pacienteId = '00482', citaId = 'cita-demo' 
           </div>
         </header>
 
-        <section className="grid gap-4 sm:grid-cols-3">
+        <section className="grid grid-cols-3 gap-2 sm:gap-4">
           {[['Piezas registradas', totalRegistrados, 'de 32 piezas'], ['Con tratamiento', conTratamiento, 'requieren seguimiento'], ['Última actualización', 'Hoy', '12 de junio, 2025']].map(([titulo, valor, detalle]) => (
-            <div key={titulo} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="text-xs font-medium uppercase tracking-wider text-slate-400">{titulo}</p><div className="mt-2 flex items-end justify-between"><span className="text-2xl font-semibold text-slate-900">{valor}</span><span className="text-xs text-slate-500">{detalle}</span></div></div>
+            <div key={titulo} className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:p-5"><p className="text-[9px] font-medium uppercase leading-tight tracking-wide text-slate-400 sm:text-xs sm:tracking-wider">{titulo}</p><div className="mt-2 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between"><span className="text-xl font-semibold text-slate-900 sm:text-2xl">{valor}</span><span className="text-[10px] leading-tight text-slate-500 sm:text-xs">{detalle}</span></div></div>
           ))}
         </section>
 
-        <section className="mt-6 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-7">
-          <div className="mb-6 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
+        <section className="mt-4 rounded-3xl border border-slate-200 bg-white p-3 shadow-sm sm:mt-6 sm:p-7">
+          <div className="mb-4 flex flex-col justify-between gap-3 sm:mb-6 sm:gap-4 lg:flex-row lg:items-center">
             <div><h2 className="text-lg font-semibold">Mapa dental</h2><p className="mt-1 text-sm text-slate-500">Selecciona una pieza para ver o editar su información.</p></div>
             <div className="flex flex-wrap gap-2 text-xs font-medium text-slate-500"><span className="rounded-full bg-slate-100 px-3 py-1.5">Adulto</span><span className="rounded-full bg-teal-50 px-3 py-1.5 text-teal-700">Dentición permanente</span></div>
           </div>
